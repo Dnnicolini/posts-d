@@ -6,6 +6,7 @@ import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 
 import 'bootstrap/dist/css/bootstrap.css'
+import AuthModal from './components/AuthModal';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
 
         </Routes>
         <Footer />
+        
       </div>
     </BrowserRouter>
   );
