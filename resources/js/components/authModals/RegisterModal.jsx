@@ -12,7 +12,7 @@ const RegisterModal = ({ show, handleClose }) => {
   });
 
 
-  const [mensagem, setMensagem] = useState("");
+  const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -31,7 +31,7 @@ const RegisterModal = ({ show, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensagem("");
+    setMessage("");
     setErrors({});
     try {
       const response = await axios.post("/register", formData, {
@@ -39,7 +39,7 @@ const RegisterModal = ({ show, handleClose }) => {
           "Content-Type": "multipart/form-data",
         },
     });
-      setMensagem(response.data.message);
+      setMessage(response.data.message);
       setFormData({ 
         name: "",
         email: "",
@@ -48,12 +48,14 @@ const RegisterModal = ({ show, handleClose }) => {
         username: "",
         avatar: null,
       });
+      handleClose();
+      window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 422) {
         setErrors(error.response.data.errors);
       } else {
         console.log(error)
-        setMensagem("Something went wrong.");
+        setMessage("Something went wrong.");
       }
     }
   };
@@ -68,7 +70,7 @@ const RegisterModal = ({ show, handleClose }) => {
             <button type="button" className="btn-close" onClick={handleClose}></button>
           </div>
           <div className="modal-body">
-          {mensagem && <div className="alert alert-info">{mensagem}</div>}
+          {message && <div className="alert alert-info">{message}</div>}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label className="form-label">Full Name</label>

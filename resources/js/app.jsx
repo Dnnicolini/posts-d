@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 
 import { AuthProvider } from './components/context/AuthContext';
+import IndividualPost from './pages/IndividualPost';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Navbar />
           <Routes className="h-full">
             <Route path="/" element={<Home />} />
+            <Route path="/view/post/:uuid" element={<IndividualPost />} />
 
           </Routes>
           <Footer />

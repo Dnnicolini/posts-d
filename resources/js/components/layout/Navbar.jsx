@@ -18,26 +18,25 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-expand-lg  w-100 px-3 ">
-      <a className="navbar-brand" href="#">
-        <img src={logoSrc} alt="logo" width="40" height="40" />
-      </a>
 
       <div className="d-flex align-items-center justify-content-between w-100" >
-        <ul className="navbar-nav mr-auto ">
+        <div className=" d-flex align-items-center mr-auto ">
+        <img src={logoSrc} alt="logo" width="40"  height="40" />
+
           {menuLinks.map((link, index) => (
-            <li className="nav-item mr-2" key={index}>
-              <Link className="nav-link" to={link.path}>
+            <li className=" list-unstyled" key={index}>
+              <Link className="ms-2 text-decoration-none link-body-emphasis" to={link.path}>
                 {link.text}
               </Link>
             </li>
           ))}
-        </ul>
+        </div>
         {user ? (
           <div>
-          <div className="flex-shrink-0 dropdown">
+          <div className=" dropdown">
           <a href="#" className="d-block link-body-emphasis text-decoration-none dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span className="fw-semibold">{user.name} </span>
-            <img src={avatarSrc} alt="avata" width="32" height="32" className="rounded-circle"/>
+            <span className="fw-semibold d-none d-sm-inline">{user.name} </span>
+            <img src={avatarSrc} alt="avatar" width="32" height="32" className="rounded-circle"/>
           </a>
           <ul className="dropdown-menu text-small shadow" >
           

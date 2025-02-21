@@ -16,7 +16,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
             'username' => 'required|string|unique:users',
-            'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            'avatar' => 'image|mimes:jpeg,png,jpg,gif'
         ]);
 
         $avatarPath = null;
@@ -29,6 +29,7 @@ class AuthController extends Controller
         }
 
         $user = User::create([
+            'uuid' => Str::uuid(),
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
@@ -38,7 +39,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('home');
 
     }
 

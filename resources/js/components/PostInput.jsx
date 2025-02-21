@@ -1,11 +1,13 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 const PostInput = ({ onPostSubmit }) => {
     const [formData, setFormData] = useState({
-        text: "",
+        post: "",
         image: null,
     });
-    const [mensagem, setMensagem] = useState("");
+    const [message, setMessage] = useState("");
+    const [errors, setErrors] = useState({});
     const [image, setImage] = useState(null);
 
 
@@ -29,38 +31,42 @@ const PostInput = ({ onPostSubmit }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setMensagem("");
+        setMessage("");
         setErrors({});
         try {
-            const response = await axios.post("/post", formData, {
+            const response = await axios.post("/create-post", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            setMensagem(response.data.message);
+            setMessage(response.data.message);
             setFormData({
-                text: "",
+                post: "",
                 image: null,
             });
+            window.location.reload();
+
+            setImage(null);
         } catch (error) {
             if (error.response && error.response.status === 422) {
                 setErrors(error.response.data.errors);
             } else {
-                console.log(error)
-                setMensagem("Something went wrong.");
+                setMessage("Something went wrong.");
             }
         }
     };
 
     return (
-        
+        <>
+        {message && <div className="alert alert-success" role="alert">{message}</div>}  
+
         <div className="post-box card mb-2 shadow">
-         {mensagem && <div className="alert alert-success" role="alert">{mensagem}</div>}  
             <form onSubmit={handleSubmit}>
                 <textarea
                     className="form-control border-0"
                     placeholder="O que você está pensando?"
-                    value={formData.text} onChange={handleChange}
+                    name="post"
+                    value={formData.post} onChange={handleChange}
                 ></textarea>
 
                 {image && (
@@ -80,6 +86,7 @@ const PostInput = ({ onPostSubmit }) => {
                 </div>
             </form>
         </div>
+        </>
     );
 };
 

@@ -7,7 +7,7 @@ const LoginModal = ({ show, handleClose }) => {
     senha: "",
   });
 
-  const [mensagem, setMensagem] = useState("");
+  const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -19,21 +19,21 @@ const LoginModal = ({ show, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensagem("");
+    setMessage("");
     setErrors({});
-
     try {
       const response = await axios.post("/login", formData);
-      setMensagem(response.data.message);
-
+      setMessage(response.data.message);
+      handleClose();
+      window.location.reload();
 
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        setMensagem(error.response.data.error);
+        setMessage(error.response.data.error);
       } else if (error.response && error.response.status === 422) {
         setErrors(error.response.data.errors);
       } else {
-        setMensagem("Something went wrong.");
+        setMessage("Something went wrong.");
       }
     }
   };
@@ -47,7 +47,7 @@ const LoginModal = ({ show, handleClose }) => {
             <button type="button" className="btn-close" onClick={handleClose}></button>
           </div>
           <div className="modal-body">
-            {mensagem && <div className="alert alert-danger">{mensagem}</div>}
+            {message && <div className="alert alert-danger">{message}</div>}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label className="form-label">Email</label>
