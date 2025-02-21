@@ -4,23 +4,26 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
-
 import 'bootstrap/dist/css/bootstrap.css'
-import AuthModal from './components/AuthModal';
+import 'bootstrap/dist/js/bootstrap.js'
+
+import { AuthProvider } from './components/context/AuthContext';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <div className="min-h-screen">
-        <Navbar />
-        <Routes className="h-full">
-        <Route path="/" element={<Home />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <div className="min-h-screen">
+          <Navbar />
+          <Routes className="h-full">
+            <Route path="/" element={<Home />} />
 
-        </Routes>
-        <Footer />
-        
-      </div>
-    </BrowserRouter>
+          </Routes>
+          <Footer />
+
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 
