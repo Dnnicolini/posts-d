@@ -1,31 +1,61 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "./context/AuthContext";
 import axios from "axios";
 import CommentInput from "./CommentInput";
-import { showSuccess, showError } from "../services/toastService";
+import { showSuccess, showError, showConfirmation } from "../services/toastService";
+import EditModal from "./EditModal";
 
 
 const Post = ({ post, userInfo, link }) => {
     const { user } = useContext(AuthContext);
-
-    const deletePost = async () => {
+    const [showModalEdit, setShowModalEdit] = useState(false);
+    const [type, setType] = useState("");
+    const [content, setContent] = useState([]);
+    const editContent = async (type, uuid) => {
+        setType(type);
         try {
-           const response = await axios.delete(`/delete-post/${post.uuid}`);
-            window.location.reload();
-            showSuccess(response.data.message);
+            const endpoint = type === "post" ? `/get-post/${uuid}/` : `/get-comment/${uuid}/`;
+            const response = await axios.get(endpoint);
+            
+            setContent(response.data);
+            setShowModalEdit(true);
         } catch (error) {
-            showError(error.response.data.error);
+            showError(error.response?.data?.error || "An error occurred");
         }
-    }
+    }        
+
+    const deletePost = async (post) => {
+        showConfirmation(
+            async () => {
+                try {
+                    const response = await axios.delete(`/delete-post/${post.uuid}`);
+                    showSuccess(response.data.message);
+                    window.location.reload();
+                } catch (error) {
+                    showError(error.response?.data?.error || "Erro ao excluir o post."); 
+                }
+            },
+            () => {
+                showError("Exclusão cancelada."); 
+            }
+        );
+    };
 
     const deleteComment = async (uuid) => {
-        try {
-            await axios.delete(`/delete-comment/${uuid}`);
-            window.location.reload();
-            showSuccess(response.data.message);
-        } catch (error) {
-            showError(error.response.data.error);
-        }
+        showConfirmation(
+            async () => {
+                try {
+                    const response = await axios.delete(`/delete-comment/${uuid}`);
+                    showSuccess(response.data.message);
+                    window.location.reload();
+                } catch (error) {
+                    showError(error.response?.data?.error || "Erro ao excluir o comentário."); 
+                }
+            },
+            () => {
+                showError("Exclusão cancelada."); 
+            }
+        )
     }
     return (
         <div className="card mb-3 border-0 shadow p-0  ">
@@ -37,6 +67,16 @@ const Post = ({ post, userInfo, link }) => {
                 />
                 <span className="post-username">{userInfo.name}</span>
                 <span className="ms-2 text-secondary">({userInfo.username})</span>
+                {userInfo?.username === user?.username && (
+
+                <button onClick={() => { editContent("post", post.uuid) }} className="btn ms-2 btn-none m-0 p-0 text-end">
+                                        <img
+                                            src="/icons/editIcon.svg"
+                                            alt="edit"
+                                            width={18}
+                                        />
+                                    </button>
+                )}
             </div>
             <div className="post-image-container">
                 {post.image && (
@@ -48,8 +88,8 @@ const Post = ({ post, userInfo, link }) => {
                     <p className="post-text">{post.post}</p>
                 </div>
                 <hr />
-                {user &&  <CommentInput post={post} />}
-               
+                {user && <CommentInput post={post} />}
+
 
                 <div className=" card-text">
 
@@ -64,18 +104,26 @@ const Post = ({ post, userInfo, link }) => {
                                         className="post-avatar-small"
                                     />
                                     <span className="post-username-small">{comment.user.name}</span>
-                                    <span className="d-flex align-items-center ms-1 text-secondary">
+                                    <span className="d-flex align-items-center text-secondary">
                                         ({comment.user.username})
-                                                 {user?.username === comment.user?.username && (
-                                        <button onClick={() => { deleteComment(comment.uuid) }} className="btn btn-none m-0 p-0">
-                                            <img
-                                                src="/icons/trashIcon.svg"
-                                                alt="trash"
-                                                width={20}
-                                            />
-                                        </button>
-                                    )}:</span>
-                                
+                                        {user?.username === comment.user?.username && (<>
+                                            <button onClick={() => { deleteComment(comment.uuid) }} className="btn btn-none m-0 p-0">
+                                                <img
+                                                    src="/icons/trashIcon.svg"
+                                                    alt="trash"
+                                                    width={20}
+                                                />
+                                            </button>
+                                            <button onClick={() => { editContent("comment", comment.uuid) }} className="btn btn-none m-0 p-0">
+                                                <img
+                                                    src="/icons/editIcon.svg"
+                                                    alt="edit"
+                                                    width={18}
+                                                />
+                                            </button>
+                                        </>
+                                        )}</span>
+
                                 </div>
                                 <p className="">{comment.comment}</p>
 
@@ -83,8 +131,8 @@ const Post = ({ post, userInfo, link }) => {
                         ))}
                     </div>
                 </div>
-                <div>
-                    <a href={post.link} className="btn btn-none mt-2 ms-0 ps-0 post-icon">
+                <div className="d-flex justify-content-end align-items-center">
+                    <a href={post.link} className="btn btn-none  ms-0 ps-0 post-icon">
                         <img
                             src="/icons/shareIcon.svg"
                             alt="share"
@@ -92,7 +140,7 @@ const Post = ({ post, userInfo, link }) => {
                         />
                     </a>
                     {userInfo?.username === user?.username && (
-                        <button onClick={() => { deletePost() }} className="btn btn-none ms-1 post-icon">
+                        <button onClick={() => { deletePost(post) }} className="btn btn-none post-icon">
                             <img
                                 src="/icons/trashIcon.svg"
                                 alt="trash"
@@ -103,7 +151,11 @@ const Post = ({ post, userInfo, link }) => {
 
                 </div>
             </div>
+
+            {showModalEdit && <EditModal showEdit={showModalEdit} handleClose={() => setShowModalEdit(false)} typeForm={type} content={content} />}
+
         </div>
+
     );
 };
 

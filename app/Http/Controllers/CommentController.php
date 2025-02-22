@@ -31,6 +31,35 @@ class CommentController extends Controller
         }
     }
 
+    public function getComment($uuid)
+    {
+        try{
+            $comment = Comment::where('uuid', $uuid)->first();
+            return response()->json($comment, 200);
+        }catch(\Throwable $th){
+            return response()->json(['error' => $th->getMessage()], 400);
+        }
+    }
+    public function updateComment(Request $request, $uuid)
+{
+    try {
+        $comment = Comment::where('uuid', $uuid)->first();
+
+        if (!$comment) {
+            return response()->json(['error' => 'Comment not found'], 404);
+        }
+
+        $this->authorize('update', $comment);
+
+        $comment->comment = $request->comment;
+        $comment->save();
+
+        return response()->json(['message' => 'Comment updated successfully'], 200);
+    } catch (\Throwable $th) {
+        return response()->json(['error' => $th->getMessage()], 400);
+    }
+}
+
     public function commentPosts($uuid)
     {
         $post     = Post::where('uuid', $uuid)->first();
@@ -41,8 +70,10 @@ class CommentController extends Controller
     public function deleteComment($uuid)
     {
         try {
-            $this->authorize('delete', Comment::class);
             $comment = Comment::where('uuid', $uuid)->first();
+
+            $this->authorize('delete', $comment);
+            
             $comment->delete();
             return response()->json(['message' => 'Comment deleted successfully'], 200);
         } catch (\Throwable $th) {

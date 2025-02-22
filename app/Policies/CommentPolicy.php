@@ -3,15 +3,20 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Comment;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CommentPolicy
 {
+    use HandlesAuthorization;
+
    /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Comment $comment): bool
     {
-        return $user->hasPermission('view-comment') && $comment->user_id === $user->id;
+        return $user->hasPermission('view-comments') && $comment->user_id === $user->id;
     }
 
     /**
@@ -19,7 +24,7 @@ class CommentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermission('create-comment');
+        return $user->hasPermission('create-comments');
     }
 
     /**
@@ -27,7 +32,7 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment): bool
     {
-        return $user->hasPermission('update-comment') && $comment->user_id === $user->id;
+        return $user->hasPermission('edit-comments') && $comment->user_id === $user->id;
     }
 
     /**
@@ -35,6 +40,6 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
-        return $user->hasPermission('delete-comment') && $comment->user_id === $user->id;
+        return $user->hasPermission('delete-comments') && $comment->user_id === $user->id;
     }
 }

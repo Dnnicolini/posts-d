@@ -3,6 +3,7 @@ import Post from '../components/Post';
 import PostInput from '../components/PostInput';
 import { AuthContext } from '../components/context/AuthContext';
 import axios from 'axios';
+import { showError } from '../services/toastService';
 
 const Home = () => {
   const { user } = useContext(AuthContext);
@@ -13,10 +14,9 @@ const Home = () => {
     axios.get('/all-posts')
       .then(response => {
         setPosts(response.data);
-        console.log(response.data);
       })
       .catch(error => {
-        console.error(error);
+        showError(error.response.data.error);
       });
   }, []);
 

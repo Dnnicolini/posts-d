@@ -11,6 +11,7 @@ class AuthController extends Controller
 {
     public function register(Request $request) {
 
+        try{
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
@@ -44,6 +45,9 @@ class AuthController extends Controller
 
         return redirect()->to('/');
 
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 400);
+        }
     }
 
 

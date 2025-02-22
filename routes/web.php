@@ -20,12 +20,16 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(App\Http\Controllers\PostController::class)->group(function () {
         Route::post('/create-post', 'createPost')->name('create-post');
         Route::delete('/delete-post/{id}', 'deletePost')->name('delete-post');
+        Route::get('/get-post/{uuid}', 'getPost')->name('get-post');
+        Route::post('/update-post/{uuid}', 'updatePost')->name('update-post');
     });
 
     Route::controller(App\Http\Controllers\CommentController::class)->group(function () {
         Route::post('/create-comment', 'createComment')->name('create-comment');
         Route::get('/comment-posts/{uuid}', 'commentPosts')->name('comment-posts');
         Route::delete('/delete-comment/{uuid}', 'deleteComment')->name('delete-comment');
+        Route::get('/get-comment/{uuid}', 'getComment')->name('get-comment');
+        Route::post('/update-comment/{uuid}', 'updateComment')->name('update-comment');
     });
 
 });

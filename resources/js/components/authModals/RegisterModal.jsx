@@ -30,7 +30,6 @@ const RegisterModal = ({ show, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
     setErrors({});
     try {
       const response = await axios.post("/register", formData, {

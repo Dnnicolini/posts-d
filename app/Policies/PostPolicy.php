@@ -11,8 +11,6 @@ class PostPolicy
 {
     use HandlesAuthorization;
 
-   
-
     /**
      * Determine whether the user can create models.
      */
@@ -26,7 +24,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        return $user->hasPermission('update-posts') && $post->user_id === $user->id;
+        return $user->hasPermission('edit-posts') && $post->user_id === $user->id;
     }
 
     /**

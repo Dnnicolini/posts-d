@@ -24,8 +24,10 @@ class RolePermissionsTableSeeder extends Seeder {
             // Regular
             ['role_id' => $roles['user'], 'permission_id' => $permissions['create-posts'], 'created_at' => Carbon::now()],
             ['role_id' => $roles['user'], 'permission_id' => $permissions['create-comments'], 'created_at' => Carbon::now()],
+            ['role_id' => $roles['user'], 'permission_id' => $permissions['edit-comments'], 'created_at' => Carbon::now()],
             ['role_id' => $roles['user'], 'permission_id' => $permissions['delete-comments'], 'created_at' => Carbon::now()],
             ['role_id' => $roles['user'], 'permission_id' => $permissions['delete-posts'], 'created_at' => Carbon::now()],
+            ['role_id' => $roles['user'], 'permission_id' => $permissions['edit-posts'], 'created_at' => Carbon::now()],
         ]);
     }
 }
