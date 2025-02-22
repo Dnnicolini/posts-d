@@ -1,3 +1,7 @@
+###RESUMO SOBRE O SISTEMA###
+
+Sistema sobre posts, o usuário pode publicar e comentar postagens, basta de cadastrar.
+
 ###Tutorial para Rodar o Projeto Localmente
 
 Este tutorial te guiará pelo processo de rodar o projeto localmente, seja utilizando Docker ou sem Docker.
@@ -44,9 +48,14 @@ Passos
 
 4. Rodar o Projeto
   a. Com Docker:
+    
    Se estiver utilizando Docker, execute o seguinte comando para subir os containers:
 
         ./vendor/bin/sail up -d
+
+    Gerar a key no .env:
+
+         ./vendor/bin/sail php artisan key:generate
 
     Depois, rode as migrações e os seeds:
 
@@ -67,6 +76,11 @@ Passos
    b. Sem Docker:
 
    ##Antes dos proximos passos é necessário a instalação do MYSQL na máquina, e alteração do .env conforme for necessário
+
+   
+    Gerar a key no .env:
+
+        php artisan key:generate
 
     Execute as migrações e seeds:
 
