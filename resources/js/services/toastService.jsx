@@ -19,7 +19,7 @@ export const showInfo = (message) => toast.info(message, toastConfig);
 export const showConfirmation = (onConfirm, onCancel) => {
     const confirmToast = toast(
         <div>
-            <p>Você tem certeza que deseja excluir este post?</p>
+            <p>Você tem certeza que deseja excluir?</p>
             <div>
                 <button
                     onClick={() => {
