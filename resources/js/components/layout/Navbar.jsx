@@ -11,8 +11,7 @@ const Navbar = () => {
   const logoSrc = "/icons/camIcon.svg";
   const avatarSrc = user?.avatar ?? "/icons/avatar.svg";
   const menuLinks = [
-    { text: "Home", href: "/" },
-    { text: "My Posts", href: "/my-posts" },
+    { text: "Home", href: "/posts/all-posts" },
   ];
 
 
@@ -21,15 +20,16 @@ const Navbar = () => {
 
       <div className="d-flex align-items-center justify-content-between w-100" >
         <div className=" d-flex align-items-center mr-auto ">
+          <a className="navbar-brand" href="/">
         <img src={logoSrc} alt="logo" width="40"  height="40" />
-
-          {menuLinks.map((link, index) => (
+</a>
+          {/* {menuLinks.map((link, index) => (
             <li className=" list-unstyled" key={index}>
-              <Link className="ms-2 text-decoration-none link-body-emphasis" to={link.path}>
+              <Link className="ms-2 text-decoration-none link-body-emphasis" to={link.href}>
                 {link.text}
               </Link>
             </li>
-          ))}
+          ))} */}
         </div>
         {user ? (
           <div>

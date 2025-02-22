@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, } from "react";
+import { showSuccess, showError } from "../../services/toastService";
 
 const LoginModal = ({ show, handleClose }) => {
   const [formData, setFormData] = useState({
@@ -7,7 +8,6 @@ const LoginModal = ({ show, handleClose }) => {
     senha: "",
   });
 
-  const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -19,22 +19,16 @@ const LoginModal = ({ show, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
     setErrors({});
     try {
       const response = await axios.post("/login", formData);
-      setMessage(response.data.message);
+      showSuccess(response.data.message);
       handleClose();
       window.location.reload();
 
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        setMessage(error.response.data.error);
-      } else if (error.response && error.response.status === 422) {
-        setErrors(error.response.data.errors);
-      } else {
-        setMessage("Something went wrong.");
-      }
+      showError(error.response.data.error);
+
     }
   };
   return (
@@ -42,12 +36,11 @@ const LoginModal = ({ show, handleClose }) => {
       <div className="show backdrop-modal"></div>
       <div className="modal-dialog modal-dialog-centered ">
         <div className="modal-content">
-          <div className="modal-header">
+          <div className="modal-header border-0">
             <h5 className="modal-title">Login</h5>
             <button type="button" className="btn-close" onClick={handleClose}></button>
           </div>
           <div className="modal-body">
-            {message && <div className="alert alert-danger">{message}</div>}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label className="form-label">Email</label>
@@ -73,7 +66,7 @@ const LoginModal = ({ show, handleClose }) => {
                 />
                 {errors.password && <div className="text-danger">{errors.password[0]}</div>}
               </div>
-              <button type="submit" className="btn btn-success w-100">Save</button>
+              <button type="submit" className="btn btn-outline-success w-100">Save</button>
             </form>
           </div>
         </div>

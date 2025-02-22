@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { showSuccess, showError } from "../../services/toastService";
 
 const RegisterModal = ({ show, handleClose }) => {
   const [formData, setFormData] = useState({
@@ -11,15 +12,13 @@ const RegisterModal = ({ show, handleClose }) => {
     avatar: null,
   });
 
-
-  const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     if (e.target.name === "avatar") {
       setFormData({
         ...formData,
-        avatar: e.target.files[0], 
+        avatar: e.target.files[0],
       });
     } else {
       setFormData({
@@ -38,9 +37,9 @@ const RegisterModal = ({ show, handleClose }) => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-    });
-      setMessage(response.data.message);
-      setFormData({ 
+      });
+      showSuccess(response.data.message);
+      setFormData({
         name: "",
         email: "",
         password: "",
@@ -50,13 +49,11 @@ const RegisterModal = ({ show, handleClose }) => {
       });
       handleClose();
       window.location.reload();
+
     } catch (error) {
-      if (error.response && error.response.status === 422) {
-        setErrors(error.response.data.errors);
-      } else {
-        console.log(error)
-        setMessage("Something went wrong.");
-      }
+      showError(error.response.data.error);
+
+
     }
   };
 
@@ -65,12 +62,11 @@ const RegisterModal = ({ show, handleClose }) => {
       <div className="show backdrop-modal"></div>
       <div className="modal-dialog modal-dialog-centered ">
         <div className="modal-content">
-          <div className="modal-header">
+          <div className="modal-header border-0">
             <h5 className="modal-title">Sign Up</h5>
             <button type="button" className="btn-close" onClick={handleClose}></button>
           </div>
           <div className="modal-body">
-          {message && <div className="alert alert-info">{message}</div>}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label className="form-label">Full Name</label>
@@ -98,9 +94,9 @@ const RegisterModal = ({ show, handleClose }) => {
               </div>
               <div className="mb-3">
                 <label className="form-label">Avatar</label>
-                <input type="file" className="form-control" name="avatar" onChange={handleChange} />
+                <input type="file" className="form-control" required accept="image/*" name="avatar" onChange={handleChange} />
               </div>
-              <button type="submit" className="btn btn-success w-100">Login</button>
+              <button type="submit" className="btn btn-success w-100">Save</button>
             </form>
           </div>
         </div>

@@ -69,11 +69,29 @@ textarea.form-control {
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
+
+    &-small{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 6px;
+    }
+}
+
+.post-comment-container {
+    overflow-y: auto;
+    max-height: 100px;
 }
 
 .post-username {
     font-weight: bold;
     font-size: 16px;
+
+    &-small{
+        font-weight: bold;
+        font-size: 14px;
+    }
 }
 
 .preview-img {

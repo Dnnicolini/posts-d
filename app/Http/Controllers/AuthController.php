@@ -25,7 +25,7 @@ class AuthController extends Controller
             $extension = $file->getClientOriginalExtension();
             $uniqueName = 'avatar_' . Str::uuid() . "." . $extension; 
             $file->storeAs('avatars', $uniqueName, 'public'); 
-            $avatarPath = 'storage/avatars/' . $uniqueName; 
+            $avatarPath = '/storage/avatars/' . $uniqueName; 
         }
 
         $user = User::create([
@@ -37,9 +37,12 @@ class AuthController extends Controller
             'avatar' => $avatarPath,
         ]);
 
+        $user->assignRole('user');
+
+
         Auth::login($user);
 
-        return redirect()->route('home');
+        return redirect()->to('/');
 
     }
 
@@ -53,7 +56,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('home');
+            return redirect()->to('/');
         }
 
         return response()->json(['error' => 'Credenciais inválidas'], 401);
@@ -64,7 +67,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('home');
+        return redirect()->to('/');
     }
 
     public function userInfo() {

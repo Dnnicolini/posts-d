@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <div className="body">
-      <div className="container  my-4 align-items-center justify-content-center post">
+      <div className="container   align-items-center justify-content-center post">
         {user && <PostInput />}
         {posts?.map((post, index) => (
           <Post key={index} post={post} userInfo={post.user} />

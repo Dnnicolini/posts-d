@@ -58,4 +58,13 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'user_roles')->withTimestamps();
     }
+
+    public function assignRole($roleName)
+    {
+        $role = Role::where('name', $roleName)->first();
+
+        if ($role) {
+            $this->roles()->attach($role->id);
+        }
+    }
 }
