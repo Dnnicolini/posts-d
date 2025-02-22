@@ -79,6 +79,10 @@ class PostController extends Controller
                 $imagePath   = '/storage/posts/' . $uniqueName;
                 $post->image = $imagePath;
             }
+            if($request->image == null){
+                
+                $post->image = null;
+            }
             $post->post = $request->post;
             $post->save();
             return response()->json(['message' => 'Post atualizado com sucesso'], 200);
