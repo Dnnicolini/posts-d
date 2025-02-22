@@ -86,6 +86,23 @@ Passos
 
 6. Acessar o Projeto
 
+    No seed temos alguns usuários caso queira acessar:
+
+        
+                'name' => 'Administrator',
+                'username' => 'admin',
+                'email' => 'admin@admin.com',
+                'password' => password
+          
+                   ou
+   
+                'name' => 'john Doe',
+                'username' => 'Johndoe',
+                'email' => 'user@user.com',
+                'password' => password,
+             
+            
+   
     Agora, basta abrir o navegador e acessar o seguinte link:
 
         http://localhost
