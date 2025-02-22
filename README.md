@@ -2,6 +2,12 @@
 
 Sistema sobre posts, o usuário pode publicar e comentar postagens, basta de cadastrar.
 
+#Tecnologias usadas:
+    - PHP 8.4
+    - LARAVEL 11
+    - REACT
+    - MYSQL
+
 ###Tutorial para Rodar o Projeto Localmente
 
 Este tutorial te guiará pelo processo de rodar o projeto localmente, seja utilizando Docker ou sem Docker.
